@@ -1,3 +1,7 @@
-import {createPhotos} from './data.js';
+import {renderThumbnails} from './thumbnails.js';
+import {initGallery} from './gallery.js';
+import { createPhotos } from './data.js';
 
-createPhotos();
+const photos = createPhotos();
+renderThumbnails(photos);
+initGallery(photos);

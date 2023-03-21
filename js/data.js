@@ -1,19 +1,11 @@
-import {getRandomInteger, getRandomArrayElement} from './util.js';
+import {
+  getRandomInteger,
+  getUniqNumberFromRange,
+  uniqValue,
+  getRandomElement
+} from './util.js';
 
-const OBJECTS_QUANTITY = 25;
-const COMMENTS_QUANTITY = 6;
-
-const AVATAR_MIN_ID = 1;
-const AVATAR_MAX_ID = 6;
-
-const COMMENT_MIN_ID = 1;
-const COMMENT_MAX_ID = 500;
-
-const PHOTO_MIN_ID = 1;
-const PHOTO_MAX_ID = 25;
-
-const PHOTO_MIN_LIKES = 15;
-const PHOTO_MAX_LIKES = 200;
+const ARRAY_LENGTH = 25;
 
 const DESCRIPTIONS = [
   'С друзьями',
@@ -22,6 +14,14 @@ const DESCRIPTIONS = [
   'На море',
   'В горах',
   'Дома',
+];
+
+const USERS_NAMES = [
+  'Илья',
+  'Игорь',
+  'Антон',
+  'Александр',
+  'Даниил'
 ];
 
 const MESSAGES = [
@@ -33,32 +33,52 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const NAMES = [
-  'Илья',
-  'Игорь',
-  'Антон',
-  'Александр',
-  'Даниил',
-  'Дарья',
-];
+const values = {
+  photoId: {
+    min: 1,
+    max: 25
+  },
+  url: {
+    min: 1,
+    max: 25
+  },
+  likes: {
+    min: 15,
+    max: 200
+  },
+  avatar: {
+    min: 1,
+    max: 6
+  },
+  comment: {
+    min: 1,
+    max: 2
+  }
+};
+
+const getUniqPhotoId = getUniqNumberFromRange(values.photoId.min, values.photoId.max);
+const getUniqUrl = getUniqNumberFromRange(values.url.min, values.url.max);
 
 const createComment = () => ({
-  id: getRandomInteger(COMMENT_MIN_ID, COMMENT_MAX_ID),
-  avatar: `img/avatar-${getRandomInteger(AVATAR_MIN_ID, AVATAR_MAX_ID)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES),
+  id: uniqValue(),
+  avatar: `img/avatar-${getRandomInteger(values.avatar.min, values.avatar.max)}.svg`,
+  message: getRandomElement(MESSAGES),
+  name: getRandomElement(USERS_NAMES)
 });
 
-const createComments = () => Array.from({length: COMMENTS_QUANTITY}, createComment);
+const createComments = () => {
+  const commentsArray = Array.from({length: getRandomInteger(values.comment.min, values.comment.max)}, createComment);
+  return commentsArray;
+};
 
-const createPhoto = () => ({
-  id: getRandomInteger(PHOTO_MIN_ID, PHOTO_MAX_ID),
-  url: `photos/${getRandomInteger(PHOTO_MIN_ID, PHOTO_MAX_ID)}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(PHOTO_MIN_LIKES, PHOTO_MAX_LIKES),
-  comments: createComments(),
+const createMockPhotos = () => ({
+  id: getUniqPhotoId(),
+  url: `photos/${getUniqUrl()}.jpg`,
+  description: getRandomElement(DESCRIPTIONS),
+  likes: getRandomInteger(values.likes.min, values.likes.max),
+  comments: createComments()
 });
 
-const createPhotos = () => Array.from({length: OBJECTS_QUANTITY}, createPhoto);
+const createPhotos = () => Array.from({length: ARRAY_LENGTH}, createMockPhotos);
 
-export {createPhotos};
+export { createPhotos };
