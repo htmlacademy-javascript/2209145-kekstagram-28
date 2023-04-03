@@ -1,4 +1,3 @@
-
 import { renderFullPhoto } from './full-size-photo.js';
 import { isEscapeKey } from './util.js';
 
